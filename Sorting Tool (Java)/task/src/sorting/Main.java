@@ -1,13 +1,32 @@
 package sorting;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
+
+    private static final String SORT_INT_ARG = "-sortIntegers";
+    private static final String DATA_TYPE_ARG = "-dataType";
+
+    //private static boolean sortIntMode;
+    //private static DataType dataProcessingMode;
+
     public static void main(final String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        if (args.length > 1 && "-dataType".equals(args[0])) {
-            switch (args[1]) {
+        List<String> runOptions = Arrays.asList(args);
+
+        if (runOptions.contains(SORT_INT_ARG)) {
+            sortIntegerData(scanner);
+            return;
+        }
+
+        int dataTypeIndex = runOptions.indexOf(DATA_TYPE_ARG) + 1;
+
+        if (dataTypeIndex < runOptions.size()) {
+            switch (runOptions.get(dataTypeIndex)) {
                 case "long" -> processLongData(scanner);
                 case "line" -> processLineData(scanner);
                 default -> processWordData(scanner);
@@ -17,12 +36,25 @@ public class Main {
         }
     }
 
-    private static void processLongData(Scanner scanner) {
+    private static void sortIntegerData(Scanner scanner) {
+        List<Long> numbers = readIntData(scanner);
+        Collections.sort(numbers);
+        System.out.println("Total numbers: " + numbers.size() + ".");
+        System.out.println("Sorted data: " + stringifyNumericList(numbers));
+    }
+
+    @NotNull
+    private static List<Long> readIntData(Scanner scanner) {
         List<Long> numbers = new ArrayList<>();
 
         while (scanner.hasNextLong()) {
             numbers.add(scanner.nextLong());
         }
+        return numbers;
+    }
+
+    private static void processLongData(Scanner scanner) {
+        List<Long> numbers = readIntData(scanner);
 
         long max = 0;
         int count = 0;
@@ -87,6 +119,10 @@ public class Main {
         int percentage = count * 100 / total;
         System.out.println("Total " + dataType.getLabel() + "s: " + total + ".");
         System.out.println("The " + dataType.getMostLabel() + " " + dataType.getLabel() + ":" + dataType.getSeparator() + mostValue + dataType.getSeparator() + "(" + count + " time(s), " + percentage + "%).");
+    }
+
+    private static String stringifyNumericList(List<Long> numbers) {
+        return numbers.stream().map(String::valueOf).collect(Collectors.joining(" "));
     }
 
 }
