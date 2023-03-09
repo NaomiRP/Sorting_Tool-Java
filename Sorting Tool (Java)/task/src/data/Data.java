@@ -1,5 +1,6 @@
 package data;
 
+import java.io.PrintStream;
 import java.util.*;
 
 import java.util.Map.Entry;
@@ -20,10 +21,10 @@ public abstract class Data<T extends Comparable<T>> {
         this.dataType = dataType;
     }
 
-    public void processData(Scanner scanner) {
+    public void processData(Scanner scanner, PrintStream out) {
         readData(scanner);
         sortData();
-        printData();
+        printData(out);
     }
 
     protected abstract void readData(Scanner scanner);
@@ -39,16 +40,16 @@ public abstract class Data<T extends Comparable<T>> {
         }
     }
 
-    protected void printData() {
+    protected void printData(PrintStream out) {
         int total = data.size();
-        System.out.println("Total " + dataType.getLabel() + "s: " + total + ".");
+        out.println("Total " + dataType.getLabel() + "s: " + total + ".");
         if (naturalSort) {
-            System.out.println("Sorted data:" + dataType.getSeparator() + dataAsString());
+            out.println("Sorted data:" + dataType.getSeparator() + dataAsString());
         } else {
             for (Entry<T, Long> entry : sortedByCount) {
                 Long count = entry.getValue();
                 long percentage = count * 100 / total;
-                System.out.println(entry.getKey() + ": " + count + " time(s), " + percentage + "%.");
+                out.println(entry.getKey() + ": " + count + " time(s), " + percentage + "%.");
             }
         }
     }
