@@ -8,7 +8,10 @@ gradlew
 *.bat
 build
 
-
 # idea config
 .idea
+
+
+
+*.class
 
