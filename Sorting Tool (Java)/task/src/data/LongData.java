@@ -13,8 +13,11 @@ public class LongData<Long> extends NumberData {
     protected void readData(Scanner scanner){
         data = new ArrayList<>();
 
-        while (scanner.hasNextLong()) {
-            data.add(scanner.nextLong());
+        while (scanner.hasNext()) {
+            if (scanner.hasNextLong())
+                data.add(scanner.nextLong());
+            else
+                System.out.println("\"" + scanner.next() + "\" is not a long. It will be skipped.");
         }
     }
 
